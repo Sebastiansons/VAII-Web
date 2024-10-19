@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Page Title</title>
+    <meta charset="UTF-8">
+    <title>S-Market Home</title>
     <link rel="stylesheet" href="css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body class="mainBackground">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="images/Logo.svg" alt="Logo" width="510" class="d-inline-block align-text-top">
+                <img src="images/logo.svg" alt="Logo" class="mainLogo d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,21 +25,107 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="pages/shop.html">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" href="pages/about.html">About us</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="stripe">
-        <div class="stripe_inner">WANNA BUY SOMETHING?</div>
+    <div class="container my-5 text-center">
+        <h2 class="mb-4">Choose Product Category</h2>
+        <div class="row">
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('phones', 1)">
+                    <div class="card-body">
+                        <i class="bi bi-phone" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Phones</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('laptops', 2)">
+                    <div class="card-body">
+                        <i class="bi bi-laptop" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Laptops</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('tvs', 3)">
+                    <div class="card-body">
+                        <i class="bi bi-tv" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">TVs</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('headphones', 4)">
+                    <div class="card-body">
+                        <i class="bi bi-headphones" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Headphones</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- Additional categories -->
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('cameras', 5)">
+                    <div class="card-body">
+                        <i class="bi bi-camera" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Cameras</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('watches', 6)">
+                    <div class="card-body">
+                        <i class="bi bi-watch" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Watches</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('tablets', 7)">
+                    <div class="card-body">
+                        <i class="bi bi-tablet" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Tablets</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('accessories', 8)">
+                    <div class="card-body">
+                        <i class="bi bi-earbuds" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Accessories</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('gaming', 9)">
+                    <div class="card-body">
+                        <i class="bi bi-controller" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Gaming</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card text-center category-card" onclick="redirectToShop('home-appliances', 10)">
+                    <div class="card-body">
+                        <i class="bi bi-house" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-2">Home Appliances</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <footer id="mainFooter" class="text-center bg-body-tertiary">
+        <div class="text-center p-3">
+            &#169; 2024 Copyright: Sebastian Sidor
+        </div>
+    </footer>
 </body>
 </html>
