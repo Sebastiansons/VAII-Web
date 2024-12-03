@@ -9,6 +9,7 @@
     <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script src="scripts/main.js"></script>
 </head>
 <body class="mainBackground">
     <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
@@ -36,91 +37,10 @@
     </nav>
     <div class="container my-5 text-center">
         <h2 class="mb-4">Choose Product Category</h2>
-        <div class="row">
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('phones', 1)">
-                    <div class="card-body">
-                        <i class="bi bi-phone" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Phones</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('laptops', 2)">
-                    <div class="card-body">
-                        <i class="bi bi-laptop" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Laptops</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('tvs', 3)">
-                    <div class="card-body">
-                        <i class="bi bi-tv" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">TVs</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('headphones', 4)">
-                    <div class="card-body">
-                        <i class="bi bi-headphones" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Headphones</h5>
-                    </div>
-                </div>
-            </div>
-            <!-- Additional categories -->
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('cameras', 5)">
-                    <div class="card-body">
-                        <i class="bi bi-camera" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Cameras</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('watches', 6)">
-                    <div class="card-body">
-                        <i class="bi bi-watch" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Watches</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('tablets', 7)">
-                    <div class="card-body">
-                        <i class="bi bi-tablet" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Tablets</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('accessories', 8)">
-                    <div class="card-body">
-                        <i class="bi bi-earbuds" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Accessories</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('gaming', 9)">
-                    <div class="card-body">
-                        <i class="bi bi-controller" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Gaming</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <div class="card text-center category-card" onclick="redirectToShop('home-appliances', 10)">
-                    <div class="card-body">
-                        <i class="bi bi-house" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Home Appliances</h5>
-                    </div>
-                </div>
-            </div>
+        <div id="categories" class="row">  
+            <script type="text/javascript">GetCategories();</script>
         </div>
     </div>
-    <script src="scripts/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <footer id="mainFooter" class="text-center bg-body-tertiary">
         <div class="text-center p-3">
