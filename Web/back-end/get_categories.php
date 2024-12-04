@@ -3,7 +3,7 @@
 
     header('Content-Type: application/json');
 
-    $sql = "SELECT CategoryID, Name, Description, Icon, IsNew, IsUnavailable FROM ShopCategories";
+    $sql = "SELECT CategoryID, Name, Description, Icon, IsNew FROM ShopCategories WHERE IsUnavailable = '0'";
     $result = mysqli_query($conn, $sql);
 
     $categories = array();

@@ -24,3 +24,21 @@ INSERT INTO ShopCategories (Name, Description, Icon, IsNew, IsUnavailable) VALUE
 ('Animals', 'Pet supplies', 'bi-bug', FALSE, FALSE),
 ('Kids', 'Childrens items', 'bi-balloon', FALSE, FALSE),
 ('Others', 'Miscellaneous', 'bi-box-seam', FALSE, FALSE);
+
+CREATE TABLE ShopItems (
+    ItemID INT AUTO_INCREMENT PRIMARY KEY,
+    CategoryID INT,
+    Name VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Price DECIMAL(10, 2) NOT NULL,
+    Image VARCHAR(255),
+    FOREIGN KEY (CategoryID) REFERENCES ShopCategories(CategoryID)
+);
+
+INSERT INTO ShopItems (CategoryID, Name, Description, Price, Image) VALUES
+(1, 'Basketball', 'A standard basketball for indoor and outdoor play', 29.99, 'basketball.png'),
+(1, 'Soccer Ball', 'A durable soccer ball for all levels of play', 25.99, 'ball.jpg'),
+(1, 'Tennis Racket', 'Lightweight tennis racket for beginners and professionals', 59.99, 'tennis_rocket.png'),
+(1, 'Running Shoes', 'Comfortable running shoes with excellent grip', 79.99, 'shoes.jpg'),
+(1, 'Baseball Glove', 'Leather glove for catching baseballs', 39.99, 'baseballGlove.jpg');

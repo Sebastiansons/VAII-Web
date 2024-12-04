@@ -1,5 +1,5 @@
-function redirectToShop(itemType, id) {
-    window.location.href = `pages/shop.html?itemtype=${itemType}&id=${id}`;
+function redirectToShop(id) {
+    window.location.href = `pages/shop.html?categoryID=${id}`;
 }
 
 function GetCategories() {
@@ -12,7 +12,7 @@ function GetCategories() {
                 const categoryDiv = document.createElement('div');
                 categoryDiv.classList.add('col-6', 'col-md-3', 'mb-4');
                 categoryDiv.innerHTML = `
-                <div class="card text-center category-card" onclick="redirectToShop('${category.Name}', ${category.CategoryID})">
+                <div class="card text-center category-card" onclick="redirectToShop(${category.CategoryID})">
                     <div class="card-body">
                         <i class="${category.Icon}" style="font-size: 2rem;"></i>
                         <h5 class="card-title mt-2">${category.Name}</h5>
@@ -24,6 +24,4 @@ function GetCategories() {
         })
         .catch(error => console.error('Error fetching data:', error));
 }
-
-
 

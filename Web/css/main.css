@@ -50,6 +50,11 @@ footer {
 .category-card:hover {
     background-color: #a0a0a0;
     cursor: pointer;
+    color: #ffffff;
+}
+
+.category-card:hover i {
+    color: #ffffff;
 }
 
 #searchButton {
@@ -58,6 +63,13 @@ footer {
     font-weight: bold;
 }
 
-    #searchButton:hover {
-        background-color: #9f9f9f;
-    }
+#searchButton:hover {
+    background-color: #9f9f9f;
+}
+
+.product-text.card-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+}
