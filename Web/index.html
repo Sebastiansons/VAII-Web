@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <script src="scripts/main.js"></script>
 </head>
@@ -21,10 +22,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
+                <ul class="navbar-nav" id="navbarContent">
                     <li class="nav-item">
                         <a class="nav-link" href="pages/shop.html">Shop</a>
                     </li>
@@ -37,7 +35,7 @@
     </nav>
     <div class="container my-5 text-center">
         <h2 class="mb-4">Choose Product Category</h2>
-        <div id="categories" class="row">  
+        <div id="categories" class="row">
             <script type="text/javascript">GetCategories();</script>
         </div>
     </div>
@@ -47,5 +45,6 @@
             &#169; 2024 Copyright: Sebastian Sidor
         </div>
     </footer>
+    <script src="scripts/global.js"></script>
 </body>
 </html>
