@@ -20,8 +20,8 @@
     </nav>
     <section class="py-3 py-md-5">
         <div class="container">
-            <h2 class="mt-5 text-center">Register</h2>
-            <form action="../registration.php" method="POST" class="mx-auto" style="max-width: 400px;">
+            <h2 class="mt-5 text-center">Registration</h2>
+            <form id="registrationForm" action="../back-end/registration_form.php" method="POST" class="mx-auto" style="max-width: 400px;">
                 <div class="form-group mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username" required>
@@ -38,7 +38,7 @@
                     <label for="confirm_password" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Register</button>
+                <button type="submit" class="btn btn-primary w-100">Sign up</button>
             </form>
             <div class="text-center mt-3">
                 <p>Have an account? <a href="../pages/login.html">Login</a></p>
@@ -46,6 +46,7 @@
         </div>
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../scripts/registration.js"></script>
     <footer id="mainFooter" class="text-center bg-body-tertiary">
         <div class="text-center p-3">
             &#169; 2024 Copyright: Sebastian Sidor

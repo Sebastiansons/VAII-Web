@@ -108,3 +108,15 @@ section {
     background-color: #0056b3;
     color: white;
 }
+
+b.Admin {
+    color:red;
+}
+
+b.Customer {
+    color: green;
+}
+
+b.Support {
+    color: orange;
+}

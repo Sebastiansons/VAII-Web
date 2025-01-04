@@ -21,10 +21,10 @@
     <section class="py-3 py-md-5">
         <div class="container">
             <h2 class="mt-5 text-center">Login</h2>
-            <form action="../login.php" method="POST" class="mx-auto" style="max-width: 400px;">
+            <form id="loginForm" action="../back-end/login_form.php" method="POST" class="mx-auto" style="max-width: 400px;">
                 <div class="form-group mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
+                    <label for="username_or_email" class="form-label">Username or Email</label>
+                    <input type="text" class="form-control" id="username_or_email" name="username_or_email" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="password" class="form-label">Password</label>
@@ -38,6 +38,8 @@
         </div>
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../scripts/global.js"></script>
+    <script src="../scripts/login.js"></script>
     <footer id="mainFooter" class="text-center bg-body-tertiary mt-5">
         <div class="text-center p-3">
             &#169; 2024 Copyright: Sebastian Sidor

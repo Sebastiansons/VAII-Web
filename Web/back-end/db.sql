@@ -42,3 +42,54 @@ INSERT INTO ShopItems (CategoryID, Name, Description, Price, Image) VALUES
 (1, 'Tennis Racket', 'Lightweight tennis racket for beginners and professionals', 59.99, 'tennis_rocket.png'),
 (1, 'Running Shoes', 'Comfortable running shoes with excellent grip', 79.99, 'shoes.jpg'),
 (1, 'Baseball Glove', 'Leather glove for catching baseballs', 39.99, 'baseballGlove.jpg');
+
+
+CREATE TABLE Users (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(30) NOT NULL UNIQUE,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE Users ADD COLUMN Session_id VARCHAR(255) DEFAULT NULL;
+ALTER TABLE Users ADD COLUMN Session_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+CREATE TABLE User_Roles (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Note VARCHAR(255) DEFAULT NULL
+);
+
+INSERT INTO User_Roles (Name, Note) VALUES
+('Customer', 'Regular customer role'),
+('Admin', 'Administrator role with full access'),
+('Support', 'Support role for customer service');
+
+ALTER TABLE users
+ADD COLUMN Role_id INT NOT NULL DEFAULT 1;
+
+ALTER TABLE users
+ADD CONSTRAINT FK_Role FOREIGN KEY (Role_id) REFERENCES user_roles(Id);
+
+ALTER TABLE users
+ADD COLUMN Balance DOUBLE(10, 2) NOT NULL DEFAULT 0.00;
+
+CREATE TABLE countries (
+    country_id INT AUTO_INCREMENT PRIMARY KEY,
+    country_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE user_addresses (
+    user_id INT NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    house_number VARCHAR(50) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    country_id INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (country_id) REFERENCES countries(country_id)
+);
+
+INSERT INTO countries (country_name) VALUES ('Slovakia');
