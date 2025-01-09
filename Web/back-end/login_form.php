@@ -42,8 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $hashed_password)) {
             session_start();
             $_SESSION['user_id'] = $userId;
-
-            $stmt = $conn->prepare("UPDATE Users SET Session_id = ?, Session_updated_at = NOW() WHERE Id = ?");
+            
+            $new_expiration_time = time() + 3600;
+            $stmt = $conn->prepare("UPDATE Users SET Session_id = ?, Session_updated_at = FROM_UNIXTIME(?) WHERE Id = ?");
             if ($stmt === false) {
                 $response['message'] = "Prepare failed: " . $conn->error;
                 echo json_encode($response);
@@ -51,25 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $sessionId = session_id();
-            $stmt->bind_param("si", $sessionId, $userId);
+            $stmt->bind_param("sii", $sessionId, $new_expiration_time, $userId);
             $stmt->execute();
 
-            $stmt = $conn->prepare("SELECT Session_updated_at FROM Users WHERE Id = ?");
-            if ($stmt === false) {
-                $response['message'] = "Prepare failed: " . $conn->error;
-                echo json_encode($response);
-                exit;
-            }
-
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $stmt->bind_result($updatedAt);
-            $stmt->fetch();
+            setcookie('sessionID', $sessionId, $new_expiration_time, "/", "", true, true);
 
             $response['status'] = 'success';
             $response['message'] = "Login successful!";
             $response['session_id'] = $sessionId;
-            $response['updated_at'] = $updatedAt;
+            $response['sessionIdExpirationDate'] = $new_expiration_time;
             $response['name'] = $username;
             $response['balance'] = number_format($balance, 2);
             $response['role'] = $roleName;
@@ -88,4 +79,5 @@ echo json_encode($response);
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_last_error_msg();
 }
+
 ?>

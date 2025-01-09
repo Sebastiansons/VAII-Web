@@ -1,26 +1,56 @@
 //Functions with SessionID
+function CheckSessionID() {
+    if (!IsSessionValid()) {
+        alert("Session has expired! Please log in again.");
+        window.location.href = "../../../VAII-Web/Web/pages/login.html";
+    }
+}
+
 function SetCookies(responseObj) {
-    console.log(responseObj)
-    const currentTime = new Date(responseObj.updated_at);
-    const expires = new Date(currentTime.getTime() + 3600000); // 1h
-    document.cookie = `sessionIDTimeout=${expires.toUTCString()}; path=/`;
-    document.cookie = "sessionID=" + responseObj.session_id + "; path=/";
+    UpdateSession(responseObj.session_id, responseObj.sessionIdExpirationDate);
     document.cookie = "username=" + responseObj.name + "; path=/";
     document.cookie = "role=" + responseObj.role + "; path=/";
     document.cookie = "balance=" + responseObj.balance + "; path=/";
-    window.location.href = "../index.html";
+   // window.location.href = "../index.html";
+}
+
+function UpdateSession(sessionId, expirTime) {
+    const date = new Date(expirTime * 1000); // Convert Unix timestamp to milliseconds
+    document.cookie = `sessionID=${sessionId}; expires=${date.toUTCString()}; path=/`;
+    console.log("sessionID cookie set:", document.cookie); // Log all cookies
 }
 
 function IsSessionValid() {
-    const sessionIDTimeout = new Date(document.cookie.replace(/(?:(?:^|.*;\s*)sessionIDTimeout\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
+    const sessionID = GetCookieValue("username");
+    console.log(sessionID);
+    if (!sessionID) {
+        
+        return false;
+    }
+
+    const sessionIDExpires = GetCookieExpiration("sessionID");
     const currentTime = new Date();
-    return (sessionIDTimeout.getTime() + 3600000) > currentTime.getTime(); // 1h
+    console.log(sessionIDExpires > currentTime);
+    return sessionIDExpires > currentTime;
 }
 
 function GetCookieValue(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
+function GetCookieExpiration(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        const cookiePart = parts.pop().split(';').shift();
+        const expiresPart = parts.pop().split(';').find(part => part.trim().startsWith('expires='));
+        if (expiresPart) {
+            return new Date(expiresPart.split('=')[1]);
+        }
+    }
     return null;
 }
 

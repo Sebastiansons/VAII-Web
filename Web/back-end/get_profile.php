@@ -3,68 +3,100 @@
 
     header('Content-Type: application/json');
 
-    $session_id = $_POST['session_id'];
+    $response = array('status' => 'error', 'message' => '');
 
-    $sql = "SELECT Id, Session_updated_at FROM users WHERE Session_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $session_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $session_id = $_COOKIE['sessionID'] ?? null;
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $user_id = $row['Id'];
-        $session_updated_at = $row['Session_updated_at'];
+        if (!$session_id) {
+            $response['status'] = 'expired'; 
+            $response['message'] = 'SessionID not valid.';
+            echo json_encode($response);
+            exit;
+        }
 
-        $current_time = new DateTime();
-        $session_time = new DateTime($session_updated_at);
-        $session_time->modify('+1 hour');
+        $sql = "SELECT Id, Session_updated_at FROM users WHERE Session_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $session_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if ($current_time < $session_time) {
-            $update_sql = "UPDATE users SET session_updated_at = CURRENT_TIMESTAMP WHERE session_id = ?";
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $user_id = $row['Id'];
+            $session_updated_at = $row['Session_updated_at'];
+
+            $current_time = new DateTime();
+            $session_time = new DateTime($session_updated_at);
+
+            if ($current_time < $session_time) {
+            $new_expiration_time = time() + 3600;
+            $update_sql = "UPDATE users SET session_updated_at = FROM_UNIXTIME(?) WHERE session_id = ?";
             $update_stmt = $conn->prepare($update_sql);
-            $update_stmt->bind_param("s", $session_id);
+            $update_stmt->bind_param("is", $new_expiration_time, $session_id);
             $update_stmt->execute();
 
-            $user_sql = "SELECT 
-                            u.username,
-                            u.email,
-                            r.name AS role,
-                            ua.street,
-                            ua.house_number,
-                            ua.city,
-                            ua.postal_code,
-                            c.country_name AS country
-                        FROM 
-                            users u
-                        JOIN 
-                            user_roles r ON r.id = u.role_id
-                        LEFT JOIN 
-                            user_addresses ua ON ua.user_id = u.id
-                        LEFT JOIN 
-                            countries c ON c.country_id = ua.country_id
-                        WHERE 
-                            u.id = ?";
-            $user_stmt = $conn->prepare($user_sql);
-            $user_stmt->bind_param("i", $user_id);
-            $user_stmt->execute();
-            $user_result = $user_stmt->get_result();
+            setcookie('sessionID', $session_id, $new_expiration_time, "/", "", true, true);
 
-            if ($user_result->num_rows > 0) {
-                $user_data = $user_result->fetch_assoc();
-                echo json_encode(['success' => true, 'data' => $user_data]);
+                $user_sql = "SELECT 
+                                u.username,
+                                u.email,
+                                r.name AS role,
+                                ua.street,
+                                ua.house_number,
+                                ua.city,
+                                ua.postal_code,
+                                c.country_name AS country
+                            FROM 
+                                users u
+                            JOIN 
+                                user_roles r ON r.id = u.role_id
+                            LEFT JOIN 
+                                user_addresses ua ON ua.user_id = u.id
+                            LEFT JOIN 
+                                countries c ON c.country_id = ua.country_id
+                            WHERE 
+                                u.id = ?";
+
+                $user_stmt = $conn->prepare($user_sql);
+                $user_stmt->bind_param("i", $user_id);
+                $user_stmt->execute();
+                $user_result = $user_stmt->get_result();
+
+                if ($user_result->num_rows > 0) {
+                    $user_data = $user_result->fetch_assoc();
+                    $response['status'] = 'success'; 
+                    $response['data'] = $user_data;
+                    $response['sessionId'] = $session_id;
+                    $response['sessionIdExpirationDate'] = $new_expiration_time;
+                    echo json_encode($response); 
+                    exit;
+                } else {
+                    $response['message'] = "No user data found.";
+                    echo json_encode($response);
+                    exit;
+                }
+
+                $user_stmt->close();
             } else {
-                echo json_encode(['success' => false, 'message' => 'No user data found.']);
+                $response['status'] = 'expired'; 
+                $response['message'] = "SessionID expired.";
+                echo json_encode($response);
+                exit;
             }
-
-            $user_stmt->close();
         } else {
-            echo json_encode(['success' => false, 'message' => 'Session expired.']);
+            $response['status'] = 'expired'; 
+            $response['message'] = "Invalid SessionID.";
+            echo json_encode($response);
+            exit;
         }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid session.']);
+
+        $stmt->close();
+        $conn->close();
     }
 
-    $stmt->close();
-    $conn->close();
+    echo json_encode($response);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo json_last_error_msg();
+    }
 ?>
