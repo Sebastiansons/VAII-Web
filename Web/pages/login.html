@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>S-Market Login</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+<body class="mainBackground">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../images/logo.svg" alt="Logo" class="mainLogo d-inline-block align-text-top">
+            </a>
+        </div>
+    </nav>
+    <section class="py-3 py-md-5">
+        <div class="container">
+            <h2 class="mt-5 text-center">Login</h2>
+            <form id="loginForm" action="../back-end/login_form.php" method="POST" class="mx-auto" style="max-width: 400px;">
+                <div class="form-group mb-3">
+                    <label for="username_or_email" class="form-label">Username or Email</label>
+                    <input type="text" class="form-control" id="username_or_email" name="username_or_email" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Don't have an account? <a href="../pages/registration.html">Register here</a></p>
+            </div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../scripts/global.js"></script>
+    <script src="../scripts/login.js"></script>
+    <footer id="mainFooter" class="text-center bg-body-tertiary mt-5">
+        <div class="text-center p-3">
+            &#169; 2024 Copyright: Sebastian Sidor
+        </div>
+    </footer>
+</body>
+</html>
