@@ -31,7 +31,8 @@ $(document).ready(function () {
         });
     }
 
-    document.getElementById('profileForm').addEventListener('submit', function (event) {
+    var form = document.getElementById('profileForm');
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
 
         let formData = new FormData(this);
@@ -62,6 +63,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status === 'success') {
                     alert(response.message);
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
                 } else {
                     alert(response.message);
                 }

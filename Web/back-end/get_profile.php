@@ -6,18 +6,17 @@
     $response = array('status' => 'error', 'message' => '');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $session_id = $_COOKIE['sessionID'] ?? null;
+        $sessionID = $_COOKIE['sessionID'] ?? null;
 
-        if (!$session_id) {
+        if (!$sessionID) {
             $response['status'] = 'expired'; 
             $response['message'] = 'SessionID not valid.';
             echo json_encode($response);
             exit;
         }
 
-        $sql = "SELECT Id, Session_updated_at FROM users WHERE Session_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $session_id);
+        $stmt = $conn->prepare('SELECT Id, Session_updated_at FROM users WHERE Session_id = ?');
+        $stmt->bind_param("s", $sessionID);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -30,13 +29,13 @@
             $session_time = new DateTime($session_updated_at);
 
             if ($current_time < $session_time) {
-            $new_expiration_time = time() + 3600;
-            $update_sql = "UPDATE users SET session_updated_at = FROM_UNIXTIME(?) WHERE session_id = ?";
-            $update_stmt = $conn->prepare($update_sql);
-            $update_stmt->bind_param("is", $new_expiration_time, $session_id);
-            $update_stmt->execute();
+                $new_expiration_time = time() + 3600;
+                $update_sql = "UPDATE users SET session_updated_at = FROM_UNIXTIME(?) WHERE Session_id = ?";
+                $update_stmt = $conn->prepare($update_sql);
+                $update_stmt->bind_param("is", $new_expiration_time, $sessionID);
+                $update_stmt->execute();
 
-            setcookie('sessionID', $session_id, $new_expiration_time, "/", "", true, true);
+                setcookie('sessionID', $sessionID, $new_expiration_time, "/", "", true, true);
 
                 $user_sql = "SELECT 
                                 u.username,
@@ -67,7 +66,7 @@
                     $user_data = $user_result->fetch_assoc();
                     $response['status'] = 'success'; 
                     $response['data'] = $user_data;
-                    $response['sessionId'] = $session_id;
+                    $response['sessionId'] = $sessionID;
                     $response['sessionIdExpirationDate'] = $new_expiration_time;
                     echo json_encode($response); 
                     exit;

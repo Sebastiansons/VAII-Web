@@ -1,4 +1,6 @@
 //Functions with SessionID
+//CheckSessionID();
+
 function CheckSessionID() {
     if (!IsSessionValid()) {
         alert("Session has expired! Please log in again.");
@@ -11,46 +13,26 @@ function SetCookies(responseObj) {
     document.cookie = "username=" + responseObj.name + "; path=/";
     document.cookie = "role=" + responseObj.role + "; path=/";
     document.cookie = "balance=" + responseObj.balance + "; path=/";
-   // window.location.href = "../index.html";
+    window.location.href = "../index.html";
 }
 
 function UpdateSession(sessionId, expirTime) {
-    const date = new Date(expirTime * 1000); // Convert Unix timestamp to milliseconds
-    document.cookie = `sessionID=${sessionId}; expires=${date.toUTCString()}; path=/`;
-    console.log("sessionID cookie set:", document.cookie); // Log all cookies
+    const date = new Date(expirTime * 1000);
+    document.cookie = `session_ID=${sessionId}; expires=${date.toUTCString()}; path=/`;
 }
 
 function IsSessionValid() {
-    const sessionID = GetCookieValue("username");
-    console.log(sessionID);
+    const sessionID = GetCookieValue("session_ID");
     if (!sessionID) {
-        
         return false;
     }
-
-    const sessionIDExpires = GetCookieExpiration("sessionID");
-    const currentTime = new Date();
-    console.log(sessionIDExpires > currentTime);
-    return sessionIDExpires > currentTime;
+    return true;
 }
 
 function GetCookieValue(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-}
-
-function GetCookieExpiration(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-        const cookiePart = parts.pop().split(';').shift();
-        const expiresPart = parts.pop().split(';').find(part => part.trim().startsWith('expires='));
-        if (expiresPart) {
-            return new Date(expiresPart.split('=')[1]);
-        }
-    }
     return null;
 }
 
@@ -83,8 +65,7 @@ function UpdateNavbar() {
 
 function Logout() {
     const pastDate = "Thu, 01 Jan 1970 00:00:00 UTC";
-    document.cookie = "sessionIDTimeout=; expires=" + pastDate + "; path=/;";
-    document.cookie = "sessionID=; expires=" + pastDate + "; path=/;";
+    document.cookie = "session_ID=; expires=" + pastDate + "; path=/;";
     document.cookie = "username=; expires=" + pastDate + "; path=/;";
     document.cookie = "role=" + pastDate + "; path=/";
     document.cookie = "balance=" + pastDate + "; path=/";
