@@ -23,6 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    if (strlen($password) < 10) {
+        $response['message'] = "Password must be at least 10 characters long.";
+        echo json_encode($response);
+        exit;
+    }
+
     if ($password !== $confirm_password) {
         $response['message'] = "Passwords do not match.";
         echo json_encode($response);

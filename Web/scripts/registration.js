@@ -6,18 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmPassword = document.getElementById('confirm_password');
 
     form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
         let valid = true;
 
-        // Username validation
         const usernameValue = username.value.trim();
         if (usernameValue === '' || usernameValue.length > 30 || /[^a-zA-Z0-9]/.test(usernameValue)) {
             alert('Username must be between 1 and 30 characters and contain no special characters.');
             valid = false;
         }
 
-        // Email validation
         const emailValue = email.value.trim();
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(emailValue)) {
@@ -25,14 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
             valid = false;
         }
 
-        // Password match validation
+        if (password.value.length < 10) {
+            alert('Password must be at least 10 characters long.');
+            valid = false;
+        }
+
         if (password.value !== confirmPassword.value) {
             alert('Passwords do not match.');
             valid = false;
         }
 
         if (valid) {
-            // Send AJAX request
             $.ajax({
                 url: form.action,
                 type: form.method,

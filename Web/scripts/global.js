@@ -1,6 +1,3 @@
-//Functions with SessionID
-//CheckSessionID();
-
 function CheckSessionID() {
     if (!IsSessionValid()) {
         alert("Session has expired! Please log in again.");
@@ -40,6 +37,7 @@ function UpdateNavbar() {
     const navbarContent = document.getElementById('navbarContent');
     if (navbarContent) {
         if (IsSessionValid()) {
+            const role = GetCookieValue('role');
             navbarContent.innerHTML += `
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,8 +45,10 @@ function UpdateNavbar() {
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><span class="dropdown-item-text">Balance: <b>${GetCookieValue('balance')}&#8364;</b></span></li>
-                    <li><span class="dropdown-item-text">Role: <b class="${GetCookieValue('role')}">${GetCookieValue('role')}</b></span></li>
+                    <li><span class="dropdown-item-text">Role: <b class="${role}">${role}</b></span></li>
                     <li><a class="dropdown-item" href="../../../VAII-Web/Web/pages/profile.html">My profile</a></li>
+                    ${role === 'Customer' ? '<li><a class="dropdown-item" href="../../../VAII-Web/Web/pages/cart.html">My cart</a></li>' : ''}
+                    ${role === 'Service' ? '<li><a class="dropdown-item" href="../../../VAII-Web/Web/pages/orders.html">Orders</a></li>' : ''}
                     <li><a class="dropdown-item" href="#" onclick="Logout();">Logout</a></li>
                 </ul>
             </li>
@@ -64,12 +64,26 @@ function UpdateNavbar() {
 }
 
 function Logout() {
-    const pastDate = "Thu, 01 Jan 1970 00:00:00 UTC";
-    document.cookie = "session_ID=; expires=" + pastDate + "; path=/;";
-    document.cookie = "username=; expires=" + pastDate + "; path=/;";
-    document.cookie = "role=" + pastDate + "; path=/";
-    document.cookie = "balance=" + pastDate + "; path=/";
-    window.location.href = "../../../VAII-Web/Web/index.html";
+    fetch('../../../VAII-Web/Web/back-end/logout.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const pastDate = "Thu, 01 Jan 1970 00:00:00 UTC";
+            document.cookie = "session_ID=; expires=" + pastDate + "; path=/;";
+            document.cookie = "username=; expires=" + pastDate + "; path=/;";
+            document.cookie = "role=; expires=" + pastDate + "; path=/;";
+            document.cookie = "balance=; expires=" + pastDate + "; path=/;";
+            window.location.href = "../../../VAII-Web/Web/index.html";
+        } else {
+            alert('Logout failed: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 document.addEventListener('DOMContentLoaded', UpdateNavbar);

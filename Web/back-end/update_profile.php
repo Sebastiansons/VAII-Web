@@ -25,6 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    if (strlen($street) < 5 || strlen($houseNumber) < 5 || strlen($city) < 5 || strlen($postalCode) < 5) {
+        $response['message'] = 'All fields must be at least 5 characters long.';
+        echo json_encode($response);
+        exit;
+    }
+
     if (strlen($postalCode) !== 5 || !preg_match('/^\d{5}$/', $postalCode)) {
         $response['message'] = 'Invalid postal code for Slovakia. It should be a 5-digit number.';
         echo json_encode($response);
