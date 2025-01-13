@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>S-Market Shop</title>
+    <title>S-Market Edit Category</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <script src="../scripts/shop.js"></script>
 </head>
 <body class="mainBackground">
     <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
@@ -23,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="navbarContent">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Shop</a>
+                        <a class="nav-link" href="shop.html?categoryID=1">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">About us</a>
@@ -32,41 +31,38 @@
             </div>
         </div>
     </nav>
-    <div class="container my-5">
-        <div class="row mb-2">
-            <div class="col-md-3 mb-3">
-                <input type="text" class="form-control me-2" id="search-name" placeholder="Search by name">
-            </div>
-            <div class="col-md-2 mb-3">
-                <input type="number" class="form-control" id="max-price" placeholder="Max price">
-            </div>
-            <div class="col-md-2 mb-3">
-                <select class="form-select" id="category-select">
-                </select>
-            </div>
-            <div class="col-md-2 mb-3">
-                <select class="form-select">
-                    <option selected>Choose type</option>
-                    <option value="1">Brand 1</option>
-                    <option value="2">Brand 2</option>
-                    <option value="3">Brand 3</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <button id="searchButton" class="btn ms-auto">Search</button>
-            </div>
+    <section class="py-3 py-md-5">
+        <div class="container">
+            <h3 class="mt-5 text-center">Edit Category</h3>
+            <form id="categoryForm" action="../back-end/update_category.php" method="POST" class="mx-auto" style="max-width: 600px;">
+                <input type="hidden" id="categoryID" name="categoryID">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="categoryDescription" class="form-label">Category Description</label>
+                        <input type="text" class="form-control" id="categoryDescription" name="categoryDescription">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="categoryIcon" class="form-label">Category Icon</label>
+                        <input type="text" class="form-control" id="categoryIcon" name="categoryIcon" placeholder="bi-placeholder" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Update Category</button>
+            </form>
         </div>
-    </div>
-    <div class="container">
-        <div id="items" class="row"></div>
-        <div id="pagination" class="pagination justify-content-center my-4"></div>
-    </div>
+    </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <footer id="mainFooter" class="text-center bg-body-tertiary">
+    <script src="../scripts/global.js"></script>
+    <script src="../scripts/edit_category.js"></script>
+    <footer id="mainFooter" class="text-center bg-body-tertiary mt-5">
         <div class="text-center p-3">
             &#169; 2024 Copyright: Sebastian Sidor
         </div>
     </footer>
-    <script src="../scripts/global.js"></script>
 </body>
 </html>

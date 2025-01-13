@@ -23,6 +23,7 @@ function UpdateSession(sessionId, expirTime) {
 
 function IsSessionValid() {
     const sessionID = GetCookieValue("session_ID");
+    console.log(sessionID);
     if (!sessionID) {
         return false;
     }
@@ -64,12 +65,26 @@ function UpdateNavbar() {
 }
 
 function Logout() {
-    const pastDate = "Thu, 01 Jan 1970 00:00:00 UTC";
-    document.cookie = "session_ID=; expires=" + pastDate + "; path=/;";
-    document.cookie = "username=; expires=" + pastDate + "; path=/;";
-    document.cookie = "role=" + pastDate + "; path=/";
-    document.cookie = "balance=" + pastDate + "; path=/";
-    window.location.href = "../../../VAII-Web/Web/index.html";
+    fetch('../../../VAII-Web/Web/back-end/logout.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const pastDate = "Thu, 01 Jan 1970 00:00:00 UTC";
+            document.cookie = "session_ID=; expires=" + pastDate + "; path=/;";
+            document.cookie = "username=; expires=" + pastDate + "; path=/;";
+            document.cookie = "role=; expires=" + pastDate + "; path=/;";
+            document.cookie = "balance=; expires=" + pastDate + "; path=/;";
+            window.location.href = "../../../VAII-Web/Web/index.html";
+        } else {
+            alert('Logout failed: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 document.addEventListener('DOMContentLoaded', UpdateNavbar);
