@@ -90,7 +90,7 @@ function LoadItems(page = 1) {
                     </div>
                     <div class="d-flex justify-content-center gap-2 mt-3 mb-3">
                         ${data.role === 'Admin' ? `
-                            <button class="btn btn-success" onclick="EditProduct(${item.ItemID}); return false;">Edit</button>
+                            <button class="btn btn-primary" onclick="EditProduct(${item.ItemID}); return false;">Edit</button>
                             <button class="btn btn-danger" onclick="DeleteItem(${item.ItemID})">Delete</button>
                             <button class="btn btn-success" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
                         ` : `
