@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    LoadFilterCategories(); //shop.js
+    LoadFilterCategories();
 });
 
 function LoadFilterCategories() {
@@ -9,7 +9,7 @@ function LoadFilterCategories() {
         success: function (response) {
             if (response.status === 'success') {
                 const select = document.getElementById('category-select');
-                select.innerHTML = ''; // Clear existing options
+                select.innerHTML = '';
                 response.data.forEach((category, index) => {
                     const option = document.createElement('option');
                     option.value = category.CategoryID;
@@ -38,7 +38,6 @@ function GetItem() {
     const productID = urlParams.get('productID');
 
     if (productID > 0) {
-        // Fetch category details from server
         $.ajax({
             url: `../back-end/Product/get_product.php?productID=${productID}`,
             type: 'GET',
@@ -118,7 +117,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status === 'success') {
                     alert('Item saved successfully');
-                    // window.location.href = "../index.html";
+                    history.back();
                 } else {
                     alert('Failed to save item: ' + response.error);
                 }

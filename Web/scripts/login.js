@@ -4,25 +4,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const password = document.getElementById('password');
 
     form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
         let valid = true;
 
-        // Username or Email validation
         const usernameOrEmailValue = usernameOrEmail.value.trim();
         if (usernameOrEmailValue === '') {
             alert('Username or Email must not be empty.');
             valid = false;
         }
 
-        // Password validation
         if (password.value.trim() === '') {
             alert('Password must not be empty.');
             valid = false;
         }
 
         if (valid) {
-            // Send AJAX request
             $.ajax({
                 url: form.action,
                 type: form.method,
@@ -37,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert('An error occurred: ' + textStatus);
-                    console.log(jqXHR.responseText); // Debugging output
+                    console.log(jqXHR.responseText);
                 }
             });
         }

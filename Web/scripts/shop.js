@@ -13,20 +13,18 @@ function LoadFilterCategories() {
         success: function (response) {
             if (response.status === 'success') {
                 const select = document.getElementById('category-select');
-                select.innerHTML = ''; // Clear existing options
+                select.innerHTML = '';
                 response.data.forEach((category, index) => {
                     const option = document.createElement('option');
                     option.value = category.CategoryID;
                     option.textContent = category.Name;
                     select.appendChild(option);
 
-                    // Set the first category as selected by default
                     if (index === 0) {
                         select.value = category.CategoryID;
                     }
                 });
 
-                // Load items for the selected category
                 LoadItems();
             } else {
                 alert(response.message);
@@ -55,25 +53,28 @@ function LoadItems(page = 1) {
             const itemsDiv = document.getElementById('items');
             itemsDiv.innerHTML = '';
 
-            // Check if the user is an admin and add the "Add new item" button if true
             if (data.role === 'Admin') {
+                const addItemButtonDiv = document.createElement('div');
+                addItemButtonDiv.classList.add('text-center', 'mb-3');
                 const addItemButton = document.createElement('button');
-                addItemButton.classList.add('btn', 'btn-primary', 'mb-3');
+                addItemButton.classList.add('btn', 'btn-primary');
                 addItemButton.textContent = 'Add new item';
+                addItemButton.style.width = 'auto';
                 addItemButton.onclick = () => {
-                    if (confirm(`Are you sure you want to add new product?`)) {
-                        window.location.href = `../pages/edit_product.html?productID=0`;
+                    if (confirm('Are you sure you want to add new product?')) {
+                        window.location.href = '../pages/edit_product.html?productID=0';
                     }
                 };
-                itemsDiv.appendChild(addItemButton);
+                addItemButtonDiv.appendChild(addItemButton);
+                itemsDiv.appendChild(addItemButtonDiv);
             }
 
             data.data.items.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('col-12', 'col-md-6', 'col-lg-4', 'mb-4');
 
-                // ZÌskanie prvÈho obr·zka z reùazca obr·zkov oddelen˝ch Ëiarkou
-                const firstImage = item.Image.split(',')[0];
+                const firstImage = item.Image ? item.Image.split(',')[0] : 'default.jpg';
+                const imagePath = firstImage.startsWith('../../') ? firstImage.substring(6) : firstImage;
 
                 itemDiv.innerHTML = `
                 <div class="card">
@@ -85,16 +86,16 @@ function LoadItems(page = 1) {
                             </div>
                             <p class="product-text card-text">${item.Description}</p>
                         </div>
-                        <img src="../images/products/${firstImage}" class="card-img-right" alt="Product Image" style="width: 150px; height: auto; margin-left: 15px;">
+                        <img src="../${imagePath}" class="card-img-right" alt="Product Image" style="width: 150px; height: auto; margin-left: 15px;">
                     </div>
                     <div class="d-flex justify-content-center gap-2 mt-3 mb-3">
                         ${data.role === 'Admin' ? `
                             <button class="btn btn-success" onclick="EditProduct(${item.ItemID}); return false;">Edit</button>
                             <button class="btn btn-danger" onclick="DeleteItem(${item.ItemID})">Delete</button>
-                            <button class="btn btn-primary" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
+                            <button class="btn btn-success" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
                         ` : `
                             <button class="btn btn-primary" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
-                            <button class="btn btn-secondary" onclick="buyItem(${item.ItemID}); return false;">Buy</button>
+                            <button class="btn btn-success" onclick="AddToCart(${item.ItemID}); return false;">Buy</button>
                         `}
                     </div>
                 </div>

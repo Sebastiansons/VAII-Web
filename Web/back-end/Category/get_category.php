@@ -12,11 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($sessionID) {
         $response = CheckSession($conn);
 
-        if (isset($response['role']) && $response['role'] == 'Admin') { // sessionOK
+        if (isset($response['role']) && $response['role'] == 'Admin') { 
             $categoryID = $_GET['categoryID'] ?? null;
 
             if ($categoryID) {
-                // Overenie, èi kategória existuje
                 $check_sql = "SELECT * FROM shopcategories WHERE CategoryID = ?";
                 $check_stmt = $conn->prepare($check_sql);
                 $check_stmt->bind_param("i", $categoryID);

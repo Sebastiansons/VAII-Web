@@ -1,17 +1,14 @@
 $(document).ready(function () {
-    // Get category ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const categoryID = urlParams.get('categoryID');
 
     if (categoryID > 0) {
-        // Fetch category details from server
         $.ajax({
             url: `../back-end/Category/get_category.php?categoryID=${categoryID}`,
             type: 'GET',
             success: function (response) {
                 if (response.status === 'success') {
                     const categoryDetails = response.data;
-                    // Fill the form with category details
                     $('#categoryID').val(categoryDetails.CategoryID);
                     $('#categoryName').val(categoryDetails.Name);
                     $('#categoryDescription').val(categoryDetails.Description);

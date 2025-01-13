@@ -1,36 +1,4 @@
-$(document).ready(function () {
-    function LoadUserProfile() {
-        CheckSessionID();
-
-        $.ajax({
-            url: '../back-end/get_profile.php',
-            type: 'POST',
-            success: function (response) {
-                if (response.status === 'success') {
-                    $('#username').val(response.data.username);
-                    $('#email').val(response.data.email);
-                    $('#role').val(response.data.role);
-                    $('#street').val(response.data.street);
-                    $('#house_number').val(response.data.house_number);
-                    $('#city').val(response.data.city);
-                    $('#postal_code').val(response.data.postal_code);
-                    // $('#country').val(response.data.country);
-
-                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
-                } else if (response.status === 'expired') {
-                    alert('SessionID has expired. Please log in again.');
-                    Logout();
-                } else {
-                    alert('Failed to load user profile.');
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert('An error occurred: ' + textStatus);
-                //console.log(jqXHR.responseText);
-            }
-        });
-    }
-
+document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('profileForm');
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -46,6 +14,11 @@ $(document).ready(function () {
 
         if (!street || !houseNumber || !city || !postalCode) {
             alert('Please fill in all fields.');
+            return;
+        }
+
+        if (street.length < 5 || houseNumber.length < 5 || city.length < 5 || postalCode.length < 5) {
+            alert('All fields must be at least 5 characters long.');
             return;
         }
 

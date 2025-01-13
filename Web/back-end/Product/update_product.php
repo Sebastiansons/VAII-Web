@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($sessionID) {
         $response = CheckSession($conn);
 
-        if (isset($response['role']) && $response['role'] == 'Admin') { // sessionOK
+        if (isset($response['role']) && $response['role'] == 'Admin') { 
             $itemID = $_POST['ItemID'] ?? null;
             $categoryID = $_POST['CategoryID'] ?? null;
             $name = $_POST['Name'] ?? null;
@@ -21,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $images = $_FILES['images'] ?? null;
 
             if ($categoryID && $name && $description && $price) {
-                // Kontrola obrázkov
                 if ($images && count($images['name']) > 0 && count($images['name']) <= 3) {
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     $totalSize = 0;
@@ -62,7 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $imagePathsString = implode(',', $imagePaths);
 
                     if ($itemID == 0) {
-                        // Vytvorenie nového produktu
                         $insert_sql = "INSERT INTO ShopItems (CategoryID, Name, Description, Price, Image) VALUES (?, ?, ?, ?, ?)";
                         $insert_stmt = $conn->prepare($insert_sql);
                         $insert_stmt->bind_param("issss", $categoryID, $name, $description, $price, $imagePathsString);
@@ -77,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $insert_stmt->close();
                     } else {
-                        // Aktualizácia existujúceho produktu
                         $check_sql = "SELECT * FROM ShopItems WHERE ItemID = ?";
                         $check_stmt = $conn->prepare($check_sql);
                         $check_stmt->bind_param("i", $itemID);
@@ -85,7 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $check_result = $check_stmt->get_result();
 
                         if ($check_result->num_rows > 0) {
-                            // Odstránenie starých obrázkov
                             $oldImages = $check_result->fetch_assoc()['Image'];
                             $oldImagePaths = explode(',', $oldImages);
                             foreach ($oldImagePaths as $oldImagePath) {

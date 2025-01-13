@@ -10,10 +10,9 @@ $category_id = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 $search_name = isset($_GET['search_name']) ? $_GET['search_name'] : '';
 $max_price = isset($_GET['max_price']) ? floatval($_GET['max_price']) : 0;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-$limit = 6; // Konštantný limit 6 položiek
+$limit = 6;
 $offset = ($page - 1) * $limit;
 
-// Získanie celkového poètu položiek
 $count_sql = "SELECT COUNT(*) as total FROM ShopItems WHERE 1=1";
 $params = [];
 $types = '';
@@ -50,7 +49,6 @@ $total_items = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $limit);
 $stmt->close();
 
-// Získanie položiek pre aktuálnu stránku
 $sql = "SELECT ItemID, Name, Description, Price, Image FROM ShopItems WHERE 1=1";
 $params = [];
 $types = '';

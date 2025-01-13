@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($sessionID) {
         $response = CheckSession($conn);
 
-        if (isset($response['role']) && $response['role'] == 'Admin') { // sessionOK
+        if (isset($response['role']) && $response['role'] == 'Admin') { 
             $data = json_decode(file_get_contents('php://input'), true);
             $categoryID = $data['categoryID'] ?? null;
             $categoryName = $data['categoryName'] ?? null;
@@ -21,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($categoryName && $categoryIcon && preg_match('/^bi-/', $categoryIcon)) {
                 if ($categoryID == 0) {
-                    // Vytvorenie novej kategórie
                     $insert_sql = "INSERT INTO shopcategories (Name, Description, Icon) VALUES (?, ?, ?)";
                     $insert_stmt = $conn->prepare($insert_sql);
                     $insert_stmt->bind_param("sss", $categoryName, $categoryDescription, $categoryIcon);
@@ -36,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $insert_stmt->close();
                 } else {
-                    // Aktualizácia existujúcej kategórie
                     $check_sql = "SELECT * FROM shopcategories WHERE CategoryID = ?";
                     $check_stmt = $conn->prepare($check_sql);
                     $check_stmt->bind_param("i", $categoryID);

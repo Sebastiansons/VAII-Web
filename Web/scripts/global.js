@@ -1,6 +1,3 @@
-//Functions with SessionID
-//CheckSessionID();
-
 function CheckSessionID() {
     if (!IsSessionValid()) {
         alert("Session has expired! Please log in again.");
@@ -23,7 +20,6 @@ function UpdateSession(sessionId, expirTime) {
 
 function IsSessionValid() {
     const sessionID = GetCookieValue("session_ID");
-    console.log(sessionID);
     if (!sessionID) {
         return false;
     }
@@ -41,6 +37,7 @@ function UpdateNavbar() {
     const navbarContent = document.getElementById('navbarContent');
     if (navbarContent) {
         if (IsSessionValid()) {
+            const role = GetCookieValue('role');
             navbarContent.innerHTML += `
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,8 +45,10 @@ function UpdateNavbar() {
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><span class="dropdown-item-text">Balance: <b>${GetCookieValue('balance')}&#8364;</b></span></li>
-                    <li><span class="dropdown-item-text">Role: <b class="${GetCookieValue('role')}">${GetCookieValue('role')}</b></span></li>
+                    <li><span class="dropdown-item-text">Role: <b class="${role}">${role}</b></span></li>
                     <li><a class="dropdown-item" href="../../../VAII-Web/Web/pages/profile.html">My profile</a></li>
+                    ${role === 'Customer' ? '<li><a class="dropdown-item" href="../../../VAII-Web/Web/pages/cart.html">My cart</a></li>' : ''}
+                    ${role === 'Service' ? '<li><a class="dropdown-item" href="../../../VAII-Web/Web/pages/orders.html">Orders</a></li>' : ''}
                     <li><a class="dropdown-item" href="#" onclick="Logout();">Logout</a></li>
                 </ul>
             </li>

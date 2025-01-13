@@ -93,3 +93,11 @@ CREATE TABLE user_addresses (
 );
 
 INSERT INTO countries (country_name) VALUES ('Slovakia');
+
+CREATE TABLE cart (
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT,
+    item_id INT,
+    FOREIGN KEY (client_id) REFERENCES users(id),
+    FOREIGN KEY (item_id) REFERENCES shopitems(ItemID)
+);

@@ -81,12 +81,10 @@ section {
     white-space: nowrap;
 }
 
-
-
 .pagination {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px; /* Medzera medzi stránkovaním a footerom */
+    margin-bottom: 20px;
 }
 
 .pagination a {

@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($sessionID) {
         $response = CheckSession($conn);
 
-        if (isset($response['role']) && $response['role'] == 'Admin') { // sessionOK
+        if (isset($response['role']) && $response['role'] == 'Admin') {
             $productID = $_GET['productID'] ?? null;
 
             if ($productID) {

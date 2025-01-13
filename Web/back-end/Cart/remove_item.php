@@ -12,38 +12,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($sessionID) {
         $response = CheckSession($conn);
 
-        if (isset($response['role']) && $response['role'] == 'Admin') { 
+        if (isset($response['role']) && $response['role'] == 'Customer') { 
             $data = json_decode(file_get_contents('php://input'), true);
-            $categoryID = $data['Id'] ?? null;
+            $cartId = $data['cart_id'] ?? null;
 
-            if ($categoryID) {
-                $check_sql = "SELECT * FROM shopcategories WHERE CategoryID = ?";
+            if ($cartId) {
+                $check_sql = "SELECT * FROM cart WHERE cart_id = ? AND client_id = ?";
                 $check_stmt = $conn->prepare($check_sql);
-                $check_stmt->bind_param("i", $categoryID);
+                $check_stmt->bind_param("ii", $cartId, $response['user_id']);
                 $check_stmt->execute();
                 $check_result = $check_stmt->get_result();
 
                 if ($check_result->num_rows > 0) {
-                    $delete_sql = "DELETE FROM shopcategories WHERE CategoryID = ?";
+                    $delete_sql = "DELETE FROM cart WHERE cart_id = ? AND client_id = ?";
                     $delete_stmt = $conn->prepare($delete_sql);
-                    $delete_stmt->bind_param("i", $categoryID);
+                    $delete_stmt->bind_param("ii", $cartId, $response['user_id']);
                     $delete_stmt->execute();
 
                     if ($delete_stmt->affected_rows > 0) {
                         $response['status'] = 'success';
-                        $response['message'] = 'Category deleted successfully.';
+                        $response['message'] = 'Item removed successfully.';
                     } else {
-                        $response['message'] = 'Failed to delete category.';
+                        $response['message'] = 'Failed to remove item from cart.';
                     }
 
                     $delete_stmt->close();
                 } else {
-                    $response['message'] = 'Invalid category ID.';
+                    $response['message'] = 'Invalid cart ID.';
                 }
 
                 $check_stmt->close();
             } else {
-                $response['message'] = 'Category ID is required.';
+                $response['message'] = 'Cart ID is required.';
             }
         } else {
             $response['status'] = 'error';
