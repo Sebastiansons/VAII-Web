@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: 127.0.0.1
--- Čas generovania: Št 06.Feb 2025, 14:05
+-- Čas generovania: Št 06.Feb 2025, 23:38
 -- Verzia serveru: 10.4.32-MariaDB
--- Verzia PHP: 8.0.30
+-- Verzia PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `cart` (
   `cart_id` int(11) NOT NULL,
   `client_id` int(11) DEFAULT NULL,
-  `item_id` int(11) DEFAULT NULL
+  `item_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -50,6 +51,50 @@ CREATE TABLE `countries` (
 
 INSERT INTO `countries` (`country_id`, `country_name`) VALUES
 (1, 'Slovakia');
+
+-- --------------------------------------------------------
+
+--
+-- Štruktúra tabuľky pre tabuľku `orders`
+--
+
+CREATE TABLE `orders` (
+  `orderID` varchar(10) NOT NULL,
+  `clientID` int(11) DEFAULT NULL,
+  `itemIDs` varchar(255) DEFAULT NULL,
+  `quantities` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `statusID` int(11) DEFAULT NULL,
+  `deliveryAddress` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `orders`
+--
+
+INSERT INTO `orders` (`orderID`, `clientID`, `itemIDs`, `quantities`, `created_at`, `statusID`, `deliveryAddress`) VALUES
+('VTKdaAOmoR', 4, '45', '3', '2025-02-06 22:27:59', 3, 'Brodnanska 210, Zilina, 12345, Slovakia');
+
+-- --------------------------------------------------------
+
+--
+-- Štruktúra tabuľky pre tabuľku `order_status`
+--
+
+CREATE TABLE `order_status` (
+  `statusID` int(11) NOT NULL,
+  `statusName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `order_status`
+--
+
+INSERT INTO `order_status` (`statusID`, `statusName`) VALUES
+(1, 'Created'),
+(2, 'Processing'),
+(3, 'Sent'),
+(4, 'Canceled');
 
 -- --------------------------------------------------------
 
@@ -76,7 +121,6 @@ INSERT INTO `shopcategories` (`CategoryID`, `Name`, `Description`, `Icon`, `IsNe
 (8, 'Furniture', 'Home furnishings', 'bi-lamp', 0, 0),
 (9, 'PC', 'Computing devices', 'bi-laptop', 0, 0),
 (10, 'Machines', 'Industrial tools', 'bi-wrench', 0, 0),
-(12, 'dew', 'Musical instruments', 'bi-music-note-beamed', 0, 0),
 (13, 'Work', 'Work essentials', 'bi-briefcase', 0, 0),
 (14, 'Animals', 'Pet supplies', 'bi-bug', 0, 0),
 (15, 'Kids', 'Childrens items', 'bi-balloon', 0, 0),
@@ -103,8 +147,7 @@ CREATE TABLE `shopitems` (
 --
 
 INSERT INTO `shopitems` (`ItemID`, `CategoryID`, `Name`, `Description`, `Created`, `Price`, `Image`) VALUES
-(31, 10, 'chainsaw', 'the best\r\nidk \r\nwert', '2025-01-13 22:45:42', 100.00, '../../images/products/67859796efa6d.png'),
-(32, 6, '32\" ViewSonic VX3218-PC-MHD Gaming', 'Monitor – VA, prehnutý, Full HD, 1920 × 1080 (16:9), 165 Hz, antireflexný displej, 8 bit, 1 ms, reproduktory, HDMI a DisplayPort, VESA', '2025-01-14 09:09:04', 238.90, '../../images/products/678629b011217.png,../../images/products/678629b011469.png');
+(45, 6, 'BEKO EWUE86261CSH1W +10 rokov záruka na motor po registrácii', 'Práčka - s predným plnením, energetická trieda A, kapacita práčky 8 kg, váž. spotreba energie 47 kWh/100 cyklov, váž. spotreba vody na cyklus 37 l, parný program, invertorový motor, odložený štart, rýchly program, displej a zvukový signál ukončenia programu, 1200 ot./min pri odstreďovaní, rozmery 60 × 84 × 55 cm (Š×V×H)', '2025-02-06 22:20:21', 321.80, '../../images/products/67a535e56d4bf.png,../../images/products/67a535e56d583.png');
 
 -- --------------------------------------------------------
 
@@ -129,8 +172,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`Id`, `Username`, `Email`, `Password`, `Created_at`, `Session_id`, `Session_updated_at`, `Role_id`, `Balance`) VALUES
-(2, 'sepkoadmin', 'sepkosidor@gmail.com', '$2y$10$xYqLEKQiVKs4VXur8Val..8RL64WGCiSb486zivuQZ5pUl3UbtBHS', '2025-01-13 22:41:34', 'mj9n3ut8mq3qt9vtskrrms2es7', '2025-02-06 12:45:37', 2, 0.00),
-(3, 'sepkocustomer', 'sebastian.sidor@codium.sk', '$2y$10$qg9jARZ3QD0jyFIBdMXPhOb6xTw5MLIfmSdaIjkgbKS9DJChGuAr2', '2025-01-13 22:42:52', NULL, '2025-01-13 22:42:52', 1, 0.00);
+(2, 'sepkoadmin', 'sepkosidor@gmail.com', '$2y$10$xYqLEKQiVKs4VXur8Val..8RL64WGCiSb486zivuQZ5pUl3UbtBHS', '2025-01-13 22:41:34', 's9nu3blgqf9b6p20qmr3b1s9g4', '2025-02-06 23:32:53', 2, 0.00),
+(4, 'sepkocustomer', 'sepko@gmail.com', '$2y$10$LcIUcxzroIMvnBUGog.t1uxMkpR9ddQ1PdnGwsg0FXXkeKdRMtGqy', '2025-02-06 13:20:50', '53mrjoq2a2p0vo4ed81gtnlmv5', '2025-02-06 23:37:08', 1, 0.00),
+(5, 'sepkosupport', 'support@gmail.com', '$2y$10$9RQtQdKPKPIDWJA6Gv31geKSfLFutKPhET6Q6miLUrtSpjUWiIEn2', '2025-02-06 18:42:15', '52bmtosbeeejvh1hl4324goumh', '2025-02-06 23:36:52', 3, 0.00);
 
 -- --------------------------------------------------------
 
@@ -152,7 +196,9 @@ CREATE TABLE `user_addresses` (
 --
 
 INSERT INTO `user_addresses` (`user_id`, `street`, `house_number`, `city`, `postal_code`, `country_id`) VALUES
-(2, 'brodno', '12345', 'zilina', '01014', 1);
+(2, 'brodno', '1234', 'zilina', '01014', 1),
+(4, 'Brodnanska', '210', 'Zilina', '12345', 1),
+(5, 'ntghn', 'tzhntz', 'Zilina', '12345', 1);
 
 -- --------------------------------------------------------
 
@@ -192,6 +238,20 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `countries`
   ADD PRIMARY KEY (`country_id`);
+
+--
+-- Indexy pre tabuľku `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`orderID`),
+  ADD KEY `clientID` (`clientID`),
+  ADD KEY `statusID` (`statusID`);
+
+--
+-- Indexy pre tabuľku `order_status`
+--
+ALTER TABLE `order_status`
+  ADD PRIMARY KEY (`statusID`);
 
 --
 -- Indexy pre tabuľku `shopcategories`
@@ -236,7 +296,7 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT pre tabuľku `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT pre tabuľku `countries`
@@ -245,22 +305,28 @@ ALTER TABLE `countries`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT pre tabuľku `order_status`
+--
+ALTER TABLE `order_status`
+  MODIFY `statusID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT pre tabuľku `shopcategories`
 --
 ALTER TABLE `shopcategories`
-  MODIFY `CategoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `CategoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT pre tabuľku `shopitems`
 --
 ALTER TABLE `shopitems`
-  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT pre tabuľku `users`
 --
 ALTER TABLE `users`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pre tabuľku `user_roles`
@@ -278,6 +344,13 @@ ALTER TABLE `user_roles`
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `users` (`Id`),
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `shopitems` (`ItemID`);
+
+--
+-- Obmedzenie pre tabuľku `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`clientID`) REFERENCES `users` (`Id`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`statusID`) REFERENCES `order_status` (`statusID`);
 
 --
 -- Obmedzenie pre tabuľku `shopitems`
