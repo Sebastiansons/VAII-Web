@@ -32,14 +32,19 @@ if ($sessionID) {
         $clientID = $response['user_id'] ?? null;
 
         if ($clientID) {
-            $address_sql = "SELECT COUNT(*) AS address_count FROM user_addresses WHERE user_id = ?";
+            $address_sql = "SELECT street, house_number, city, postal_code, c.country_name AS country
+                            FROM user_addresses ua
+                            JOIN countries c ON ua.country_id = c.country_id
+                            WHERE ua.user_id = ?";
             $address_stmt = $conn->prepare($address_sql);
             $address_stmt->bind_param("i", $clientID);
             $address_stmt->execute();
             $address_result = $address_stmt->get_result();
             $address_row = $address_result->fetch_assoc();
 
-            if ($address_row['address_count'] == 1) {
+            if ($address_row) {
+                $deliveryAddress = $address_row['street'] . ' ' . $address_row['house_number'] . ', ' . $address_row['city'] . ', ' . $address_row['postal_code'] . ', ' . $address_row['country'];
+
                 $sql = "SELECT item_id, quantity FROM cart WHERE client_id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $clientID);
@@ -59,9 +64,9 @@ if ($sessionID) {
                     $quantitiesStr = implode(',', $quantities);
                     $statusID = 1;
 
-                    $insert_sql = "INSERT INTO orders (orderID, clientID, itemIDs, quantities, statusID) VALUES (?, ?, ?, ?, ?)";
+                    $insert_sql = "INSERT INTO orders (orderID, clientID, itemIDs, quantities, statusID, deliveryAddress) VALUES (?, ?, ?, ?, ?, ?)";
                     $insert_stmt = $conn->prepare($insert_sql);
-                    $insert_stmt->bind_param("sissi", $orderID, $clientID, $itemIDsStr, $quantitiesStr, $statusID);
+                    $insert_stmt->bind_param("sissis", $orderID, $clientID, $itemIDsStr, $quantitiesStr, $statusID, $deliveryAddress);
                     $insert_stmt->execute();
 
                     if ($insert_stmt->affected_rows > 0) {

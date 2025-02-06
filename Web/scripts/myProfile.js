@@ -47,8 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (street.length < 5 || houseNumber.length < 5 || city.length < 5 || postalCode.length < 5) {
-            alert('All fields must be at least 5 characters long.');
+        if (street.length < 5 || city.length < 5) {
+            alert('Street, city must be at least 5 characters long.');
+            return;
+        }
+
+        if (houseNumber.length < 3) {
+            alert('HouseNumber must be at least 3 characters long.');
             return;
         }
 

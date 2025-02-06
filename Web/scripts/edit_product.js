@@ -117,7 +117,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status === 'success') {
                     alert('Item saved successfully');
-                    history.back();
+                    window.location.href = "../pages/shop.html?categoryID=" + $('#category-select').val().trim();
                 } else {
                     alert('Failed to save item: ' + response.error);
                 }

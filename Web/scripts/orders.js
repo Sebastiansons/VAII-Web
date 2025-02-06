@@ -45,7 +45,7 @@ $(document).ready(function () {
     }
 
     function renderOrders(orders) {
-        let ordersHtml = '<table class="table table-bordered"><thead><tr><th>Order ID</th><th>Created At</th><th>Total Price</th><th>Status</th><th>Detail</th></tr></thead><tbody>';
+        let ordersHtml = '<table class="table table-bordered"><thead><tr><th>Order ID</th><th>Created At</th><th>Total Price</th><th>Status</th><th>Delivery Address</th><th>Detail</th></tr></thead><tbody>';
         orders.forEach(order => {
             let statusClass = '';
             switch (order.statusName) {
@@ -78,6 +78,7 @@ $(document).ready(function () {
                         </select>
                         ` : order.statusName}
                     </td>
+                    <td>${order.deliveryAddress}</td>
                     <td><a href="order_detail.html?orderID=${order.orderID}" class="btn btn-primary">Detail</a></td>
                 </tr>
             `;

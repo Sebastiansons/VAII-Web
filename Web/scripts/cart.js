@@ -4,30 +4,54 @@ $(document).ready(function () {
         loadCartItems();
 
         $('#orderButton').click(function () {
-            if (confirm('Do you really want to order these items? They will be sent to the address you have in your profile. If you want to change it, go change it in your account profile.')) {
-                $.ajax({
-                    url: '../back-end/Cart/order_items.php',
-                    type: 'POST',
-                    success: function (response) {
-                        if (response.status === 'success') {
-                            alert('Order placed successfully.');
-                            loadCartItems();
+            $.ajax({
+                url: '../back-end/Cart/get_cart.php',
+                type: 'GET',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        const address = response.address;
+                        const cartItems = response.data;
+                        if (address) {
+                            if (confirm(`Do you really want to order these items? They will be sent to the following address:\n${address.street} ${address.house_number}, ${address.city}, ${address.postal_code}, ${address.country}. If you want to change it, go change it in your account profile.`)) {
+                                placeOrder();
+                            }
                         } else {
-                            alert(response.message);
+                            alert('Please set your address in your profile before placing an order.');
                         }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('An error occurred: ' + textStatus);
-                        console.log(jqXHR.responseText);
+                    } else {
+                        alert(response.message);
                     }
-                });
-            }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('An error occurred: ' + textStatus);
+                    console.log(jqXHR.responseText);
+                }
+            });
         });
     } else {
         alert('Only customers can view the cart.');
         window.location.href = '../index.html';
     }
 });
+
+function placeOrder() {
+    $.ajax({
+        url: '../back-end/Cart/order_items.php',
+        type: 'POST',
+        success: function (response) {
+            if (response.status === 'success') {
+                alert('Order placed successfully.');
+                loadCartItems();
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('An error occurred: ' + textStatus);
+            console.log(jqXHR.responseText);
+        }
+    });
+}
 
 function loadCartItems() {
     $.ajax({
@@ -36,6 +60,17 @@ function loadCartItems() {
         success: function (response) {
             if (response.status === 'success') {
                 const cartItems = response.data;
+                const address = response.address;
+                let addressHtml = '';
+
+                if (address) {
+                    addressHtml = `<p class="text-center mt-3" id="addressInfo">Delivery address is: ${address.street} ${address.house_number}, ${address.city}, ${address.postal_code}, ${address.country}</p>`;
+                } else {
+                    addressHtml = '<p class="text-center mt-3" id="addressInfo">Address is not set, please set it in your profile.</p>';
+                }
+
+                $('#addressInfo').html(addressHtml);
+
                 if (cartItems.length === 0) {
                     $('#cartItems').html('<p class="text-center mt-3">Cart is empty</p>');
                     document.cookie = "cartCount=0; path=/";
@@ -44,7 +79,7 @@ function loadCartItems() {
                 } else {
                     let totalSum = 0;
                     let totalCount = 0;
-                    let itemsHtml = '<table class="table table-bordered mt-3"><thead><tr><th>Name</th><th>Quantity</th><th>Image</th><th>Price</th><th>Delete</th></tr></thead><tbody>';
+                    let itemsHtml = '<table class="table table-bordered mt-3"><thead><tr><th>Name</th><th>Quantity</th><th>Image</th><th>Total Price</th><th>Delete</th></thead><tbody>';
                     cartItems.forEach(item => {
                         const firstImage = item.image ? item.image.split(',')[0] : 'default.jpg';
                         const imagePath = firstImage.startsWith('../../') ? firstImage.substring(6) : firstImage;
@@ -54,9 +89,9 @@ function loadCartItems() {
                         itemsHtml += `
                             <tr>
                                 <td><a href="product_detail.html?productID=${item.ItemID}" class="item-name">${item.name}</a></td>
-                                <td>${item.quantity}</td>
+                                <td><input type="number" class="quantity-input" data-id="${item.cart_id}" value="${item.quantity}" min="1" max="10"></td>
                                 <td><img src="../${imagePath}" class="img-fluid" alt="${item.name}" style="width: 100px; height: auto;"></td>
-                                <td>${item.price}&#8364;</td>
+                                <td>${itemTotal.toFixed(2)}&#8364;</td>
                                 <td><button class="removeItemButton btn btn-danger" data-id="${item.cart_id}">&times;</button></td>
                             </tr>
                         `;
@@ -80,6 +115,19 @@ function loadCartItems() {
                         removeCartItem(cartId);
                     });
 
+                    $('.quantity-input').change(function () {
+                        const cartId = $(this).data('id');
+                        const newQuantity = $(this).val();
+                        if (newQuantity < 1) {
+                            removeCartItem(cartId);
+                        } else if (newQuantity > 10) {
+                            alert('Quantity cannot be more than 10.');
+                            $(this).val(10);
+                        } else {
+                            updateCartItemQuantity(cartId, newQuantity);
+                        }
+                    });
+
                     $('#payButton').click(function () {
                         $.ajax({
                             url: '../back-end/Order/create_order.php',
@@ -99,6 +147,26 @@ function loadCartItems() {
                         });
                     });
                 }
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('An error occurred: ' + textStatus);
+            console.log(jqXHR.responseText);
+        }
+    });
+}
+
+function updateCartItemQuantity(cartId, newQuantity) {
+    $.ajax({
+        url: '../back-end/Cart/update_quantity.php',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ cart_id: cartId, quantity: newQuantity }),
+        success: function (response) {
+            if (response.status === 'success') {
+                loadCartItems();
             } else {
                 alert(response.message);
             }

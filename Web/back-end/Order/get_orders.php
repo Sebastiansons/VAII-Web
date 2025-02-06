@@ -38,11 +38,19 @@ if ($sessionID) {
         }
 
         if ($role == 'Customer' && $clientID) {
-            $sql = "SELECT orderID, created_at, statusID, (SELECT SUM(si.Price * FIND_IN_SET(si.ItemID, o.itemIDs)) FROM shopitems si WHERE FIND_IN_SET(si.ItemID, o.itemIDs)) AS total_price FROM orders o WHERE clientID = ? $filterSql LIMIT ? OFFSET ?";
+            $sql = "SELECT orderID, created_at, statusID, itemIDs, quantities, deliveryAddress 
+                    FROM orders 
+                    WHERE clientID = ? $filterSql 
+                    ORDER BY created_at DESC 
+                    LIMIT ? OFFSET ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iii", $clientID, $limit, $offset);
         } elseif ($role == 'Support') {
-            $sql = "SELECT orderID, created_at, statusID, (SELECT SUM(si.Price * FIND_IN_SET(si.ItemID, o.itemIDs)) FROM shopitems si WHERE FIND_IN_SET(si.ItemID, o.itemIDs)) AS total_price FROM orders o WHERE 1=1 $filterSql LIMIT ? OFFSET ?";
+            $sql = "SELECT orderID, created_at, statusID, itemIDs, quantities, deliveryAddress 
+                    FROM orders 
+                    WHERE 1=1 $filterSql 
+                    ORDER BY created_at DESC 
+                    LIMIT ? OFFSET ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ii", $limit, $offset);
         } else {
@@ -54,6 +62,27 @@ if ($sessionID) {
         $stmt->execute();
         $result = $stmt->get_result();
         $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+        // Calculate total price for each order
+        foreach ($orders as &$order) {
+            $itemIDs = explode(',', $order['itemIDs']);
+            $quantities = explode(',', $order['quantities']);
+            $totalPrice = 0;
+
+            foreach ($itemIDs as $index => $itemID) {
+                $quantity = $quantities[$index];
+                $priceQuery = $conn->prepare("SELECT Price FROM shopitems WHERE ItemID = ?");
+                $priceQuery->bind_param("i", $itemID);
+                $priceQuery->execute();
+                $priceQuery->bind_result($price);
+                $priceQuery->fetch();
+                $priceQuery->close();
+
+                $totalPrice += $price * $quantity;
+            }
+
+            $order['total_price'] = $totalPrice;
+        }
 
         $count_sql = ($role == 'Customer') ? "SELECT COUNT(*) AS total FROM orders WHERE clientID = ? $filterSql" : "SELECT COUNT(*) AS total FROM orders WHERE 1=1 $filterSql";
         $count_stmt = $conn->prepare($count_sql);

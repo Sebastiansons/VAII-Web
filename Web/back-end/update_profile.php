@@ -25,8 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if (strlen($street) < 5 || strlen($houseNumber) < 5 || strlen($city) < 5 || strlen($postalCode) < 5) {
-        $response['message'] = 'All fields must be at least 5 characters long.';
+    if (strlen($street) < 5 || strlen($city) < 5) {
+        $response['message'] = 'Street, city must be at least 5 characters long.';
+        echo json_encode($response);
+        exit;
+    }
+
+    if (strlen($houseNumber) < 3) {
+        $response['message'] = 'HouseNumber must be at least 3 characters long.';
         echo json_encode($response);
         exit;
     }

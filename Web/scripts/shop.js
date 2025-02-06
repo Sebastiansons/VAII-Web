@@ -50,9 +50,10 @@ function LoadFilterCategories() {
 function LoadItems(page = 1) {
     const categoryId = document.getElementById('category-select').value;
     const searchName = document.getElementById('search-name').value;
+    const minPrice = document.getElementById('min-price').value;
     const maxPrice = document.getElementById('max-price').value;
 
-    fetch(`../back-end/Product/get_filtered_products.php?category_id=${categoryId}&search_name=${searchName}&max_price=${maxPrice}&page=${page}`)
+    fetch(`../back-end/Product/get_filtered_products.php?category_id=${categoryId}&search_name=${searchName}&min_price=${minPrice}&max_price=${maxPrice}&page=${page}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

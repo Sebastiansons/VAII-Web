@@ -122,3 +122,6 @@ CREATE TABLE orders (
 );
 
 INSERT INTO order_status (statusName) VALUES ('Created'), ('Processing'), ('Sent'), ('Canceled');
+
+ALTER TABLE orders
+ADD COLUMN deliveryAddress VARCHAR(255) NOT NULL;
