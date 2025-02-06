@@ -58,7 +58,6 @@ $(document).ready(function () {
             }),
             contentType: 'application/json',
             success: function (response) {
-                console.log(response);
                 if (response.status === 'success') {
                     if (response.sessionId != null) {
                         UpdateSession(response.sessionId, response.sessionIdExpirationDate);
