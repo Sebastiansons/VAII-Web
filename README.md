@@ -2,8 +2,8 @@
 Project for my university subject VAII (vývoj aplikácií pre internet a intranet)
 
 Navod:
-Nahodit vsetky subory na server
-Ist do DB a nahodit db.sql
+Nahodit vsetky subory na Web (v skratke staci nahodit VAII-Web folder, zmenenie architektury kodu sposobi kod nefunkcny!)
+Ist do DB (MariaDB) a nahodit, resp. importovat SQL -> s_market.sql (back-end/)
 
 
 Author: Sebastián Sidor
