@@ -31,6 +31,9 @@ $(document).ready(function () {
             data: { page: page, ...deparam(filters) },
             success: function (response) {
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     renderOrders(response.orders);
                     renderPagination(response.total_pages, page);
                 } else {
@@ -102,6 +105,9 @@ $(document).ready(function () {
             data: { orderID: orderID, status: newStatus },
             success: function (response) {
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     alert('Order status updated successfully.');
                 } else if (response.status === 'expired') {
                     alert('SessionID has expired. Please log in again.');

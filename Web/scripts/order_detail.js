@@ -15,6 +15,9 @@ $(document).ready(function () {
             data: { orderID: orderID },
             success: function (response) {
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     renderOrderDetails(response.order);
                 } else {
                     alert(response.message);

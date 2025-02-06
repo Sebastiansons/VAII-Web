@@ -8,6 +8,9 @@ function LoadFilterCategories() {
         type: 'GET',
         success: function (response) {
             if (response.status === 'success') {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
                 const select = document.getElementById('category-select');
                 select.innerHTML = '';
                 response.data.forEach((category, index) => {
@@ -42,6 +45,9 @@ function GetItem() {
             url: `../back-end/Product/get_product.php?productID=${productID}`,
             type: 'GET',
             success: function (response) {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
                 if (response.status === 'success') {
                     document.getElementById('itemID').value = response.data.ItemID;
                     document.getElementById('category-select').value = response.data.CategoryID;
@@ -116,6 +122,9 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     alert('Item saved successfully');
                     window.location.href = "../pages/shop.html?categoryID=" + $('#category-select').val().trim();
                 } else {

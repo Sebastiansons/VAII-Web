@@ -48,7 +48,7 @@ if ($sessionID) {
                     $item_result = $item_stmt->get_result();
                     $item = $item_result->fetch_assoc();
                     $item['quantity'] = $quantities[$index];
-                    $item['first_image'] = explode(',', $item['Image'])[0]; // Pridanie prvého obrázka
+                    $item['first_image'] = explode(',', $item['Image'])[0]; // add first img
                     $items[] = $item;
                     $item_stmt->close();
                 }

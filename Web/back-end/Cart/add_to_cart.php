@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $clientID = $response['user_id'] ?? null;
 
             if ($itemID && $clientID) {
-                // Skontrolujeme, èi už položka existuje v košíku
                 $check_sql = "SELECT quantity FROM cart WHERE client_id = ? AND item_id = ?";
                 $check_stmt = $conn->prepare($check_sql);
                 $check_stmt->bind_param("ii", $clientID, $itemID);
@@ -25,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $check_stmt->store_result();
 
                 if ($check_stmt->num_rows > 0) {
-                    // Ak položka existuje, zvýšime jej množstvo o 1
                     $check_stmt->bind_result($quantity);
                     $check_stmt->fetch();
                     $new_quantity = $quantity + 1;
@@ -44,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $update_stmt->close();
                 } else {
-                    // Ak položka neexistuje, pridáme ju do košíka
                     $insert_sql = "INSERT INTO cart (client_id, item_id, quantity) VALUES (?, ?, 1)";
                     $insert_stmt = $conn->prepare($insert_sql);
                     $insert_stmt->bind_param("ii", $clientID, $itemID);

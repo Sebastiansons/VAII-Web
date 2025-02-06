@@ -8,6 +8,9 @@ $(document).ready(function () {
             type: 'GET',
             success: function (response) {
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     const categoryDetails = response.data;
                     $('#categoryID').val(categoryDetails.CategoryID);
                     $('#categoryName').val(categoryDetails.Name);
@@ -57,6 +60,9 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response);
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     alert(response.message);
                     window.location.href = "../index.html";
                 } else if (response.status === 'expired') {

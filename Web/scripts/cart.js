@@ -9,6 +9,9 @@ $(document).ready(function () {
                 type: 'GET',
                 success: function (response) {
                     if (response.status === 'success') {
+                        if (response.sessionId != null) {
+                            UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                        }
                         const address = response.address;
                         const cartItems = response.data;
                         if (address) {
@@ -40,6 +43,9 @@ function placeOrder() {
         type: 'POST',
         success: function (response) {
             if (response.status === 'success') {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
                 alert('Order placed successfully.');
                 loadCartItems();
             } else {
@@ -59,6 +65,9 @@ function loadCartItems() {
         type: 'GET',
         success: function (response) {
             if (response.status === 'success') {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
                 const cartItems = response.data;
                 const address = response.address;
                 let addressHtml = '';
@@ -134,6 +143,9 @@ function loadCartItems() {
                             type: 'POST',
                             success: function (response) {
                                 if (response.status === 'success') {
+                                    if (response.sessionId != null) {
+                                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                                    }
                                     alert(response.message);
                                     loadCartItems();
                                 } else {
@@ -166,6 +178,9 @@ function updateCartItemQuantity(cartId, newQuantity) {
         data: JSON.stringify({ cart_id: cartId, quantity: newQuantity }),
         success: function (response) {
             if (response.status === 'success') {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
                 loadCartItems();
             } else {
                 alert(response.message);
@@ -186,6 +201,9 @@ function removeCartItem(cartId) {
         data: JSON.stringify({ cart_id: cartId }),
         success: function (response) {
             if (response.status === 'success') {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
                 alert('Item removed successfully.');
                 loadCartItems();
             } else {

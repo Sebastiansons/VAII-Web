@@ -60,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($stmt->affected_rows > 0) {
                 setcookie('sessionID', $sessionId, $new_expiration_time, "/", "", true, true);
 
-                // Získanie poètu položiek v košíku
                 $cartStmt = $conn->prepare("SELECT SUM(quantity) AS stockcount FROM cart WHERE client_id = ?");
                 if ($cartStmt === false) {
                     $response['message'] = "Prepare failed: " . $conn->error;
@@ -81,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $response['name'] = $username;
                 $response['balance'] = number_format($balance, 2);
                 $response['role'] = $roleName;
-                $response['stockcount'] = $stockcount; // Pridanie poètu položiek v košíku do odpovede
+                $response['stockcount'] = $stockcount;
             } else {
                 $response['message'] = "Failed to update session.";
             }

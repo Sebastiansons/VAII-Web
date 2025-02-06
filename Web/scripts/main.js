@@ -84,8 +84,10 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.status === 'success') {
+                        if (response.sessionId != null) {
+                            UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                        }
                         alert(response.message);
-                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
                         GetCategories();
                     } else if (response.status === 'expired') {
                         alert('SessionID has expired. Please log in again.');

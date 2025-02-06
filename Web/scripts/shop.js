@@ -14,6 +14,10 @@ function LoadFilterCategories() {
         type: 'GET',
         success: function (response) {
             if (response.status === 'success') {
+                if (response.sessionId != null) {
+                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                }
+
                 const select = document.getElementById('category-select');
                 select.innerHTML = '';
                 let isValidCategoryID = false;
@@ -165,7 +169,9 @@ function DeleteItem(itemID) {
             success: function (response) {
                 if (response.status === 'success') {
                     alert(response.message);
-                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     LoadItems();
                 } else if (response.status === 'expired') {
                     alert('SessionID has expired. Please log in again.');
