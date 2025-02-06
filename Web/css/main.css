@@ -1,4 +1,4 @@
-.navbar {
+﻿.navbar {
     position: fixed;
     top: 0;
     width: 100%;
@@ -117,4 +117,41 @@ b.Customer {
 
 b.Support {
     color: orange;
+}
+
+.user-icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cart-count {
+    position: inherit;
+    margin-left: -7px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.dropdown-item span.cart-count {
+    margin-left: -1px;
+}
+
+.cart-count.single-digit {
+    padding: 3px 6px;
+}
+
+.dropdown-item span.cart-count.single-digit {
+    padding: 0px 5px;
+}
+
+.cart-count.double-digit {
+    padding: 6px 6px;
+}
+
+.dropdown-item span.cart-count.double-digit {
+    padding: 3px 5px;
 }

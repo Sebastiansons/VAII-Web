@@ -8,7 +8,13 @@ function AddToCart(itemID) {
                 data: { ItemID: itemID },
                 success: function (response) {
                     if (response.status === 'success') {
+                        if (response.sessionId != null) {
+                            UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                        }
                         alert(response.message);
+                        IncreaseCartNumber();
+                        $('.cartCount').text(GetCookieValue('cartCount'));
+                        $('.cartCount').show();
                     } else {
                         alert(response.message);
                     }

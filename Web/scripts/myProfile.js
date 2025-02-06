@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     $('#city').val(response.data.city);
                     $('#postal_code').val(response.data.postal_code);
 
-                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                 } else if (response.status === 'expired') {
                     alert('SessionID has expired. Please log in again.');
                     Logout();
@@ -47,8 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (street.length < 5 || houseNumber.length < 5 || city.length < 5 || postalCode.length < 5) {
-            alert('All fields must be at least 5 characters long.');
+        if (street.length < 5 || city.length < 5) {
+            alert('Street, city must be at least 5 characters long.');
+            return;
+        }
+
+        if (houseNumber.length < 3) {
+            alert('HouseNumber must be at least 3 characters long.');
             return;
         }
 
@@ -65,8 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
             processData: false,
             success: function (response) {
                 if (response.status === 'success') {
+                    if (response.sessionId != null) {
+                        UpdateSession(response.sessionId, response.sessionIdExpirationDate);
+                    }
                     alert(response.message);
-                    UpdateSession(response.sessionId, response.sessionIdExpirationDate);
                 } else {
                     alert(response.message);
                 }

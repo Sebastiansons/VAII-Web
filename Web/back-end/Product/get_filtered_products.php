@@ -8,6 +8,7 @@ $response = array('status' => 'error', 'message' => '', 'data' => array());
 
 $category_id = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 $search_name = isset($_GET['search_name']) ? $_GET['search_name'] : '';
+$min_price = isset($_GET['min_price']) ? floatval($_GET['min_price']) : 0;
 $max_price = isset($_GET['max_price']) ? floatval($_GET['max_price']) : 0;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $limit = 6;
@@ -33,6 +34,12 @@ if (!empty($search_name)) {
     $count_sql .= " AND Name LIKE ?";
     $params[] = '%' . $search_name . '%';
     $types .= 's';
+}
+
+if ($min_price > 0) {
+    $count_sql .= " AND Price >= ?";
+    $params[] = $min_price;
+    $types .= 'd';
 }
 
 if ($max_price > 0) {
@@ -63,6 +70,12 @@ if (!empty($search_name)) {
     $sql .= " AND Name LIKE ?";
     $params[] = '%' . $search_name . '%';
     $types .= 's';
+}
+
+if ($min_price > 0) {
+    $sql .= " AND Price >= ?";
+    $params[] = $min_price;
+    $types .= 'd';
 }
 
 if ($max_price > 0) {
