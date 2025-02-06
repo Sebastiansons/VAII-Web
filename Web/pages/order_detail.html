@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>S-Market Product Detail</title>
+    <title>S-Market Order Detail</title>
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -11,8 +11,6 @@
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../scripts/global.js"></script>
-    <script src="../scripts/globalShop.js"></script>
-    <link rel="stylesheet" href="../css/productDetail.css">
 </head>
 <body class="mainBackground">
     <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
@@ -36,7 +34,9 @@
         </div>
     </nav>
     <div class="container my-5">
-        <div id="productDetail" class="row">
+        <h2 class="text-center" id="orderTitle">Order Details</h2>
+        <div id="orderItemsTable" class="table-responsive">
+            <!-- Tabu¾ka položiek objednávky bude dynamicky generovaná tu -->
         </div>
         <div class="d-flex justify-content-between mt-4">
             <button class="btn btn-secondary" onclick="history.back();">Back</button>
@@ -47,6 +47,6 @@
             &#169; 2024 Copyright: Sebastian Sidor
         </div>
     </footer>
-    <script type="text/javascript" src="../scripts/product_detail.js"></script>
+    <script src="../scripts/order_detail.js"></script>
 </body>
 </html>

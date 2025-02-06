@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>S-Market Orders</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bbq/1.3.1/jquery.ba-bbq.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body class="mainBackground">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../images/logo.svg" alt="Logo" class="mainLogo d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav" id="navbarContent">
+                    <li class="nav-item">
+                        <a class="nav-link" href="shop.html?categoryID=1">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <h2 class="text-center">Orders</h2>
+        <div id="filterForm" class="mb-4" style="display: none;">
+            <form id="orderFilterForm">
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="orderID" name="orderID" placeholder="Order ID">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control datepicker" id="dateFrom" name="dateFrom" placeholder="Date From">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control datepicker" id="dateTo" name="dateTo" placeholder="Date To">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="status" name="status">
+                            <option value="">Select Status</option>
+                            <option value="1">Created</option>
+                            <option value="2">Processing</option>
+                            <option value="3">Sent</option>
+                            <option value="4">Canceled</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="ordersTable" class="table-responsive">
+            <!-- Tabu¾ka objednávok bude dynamicky generovaná tu -->
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center" id="pagination">
+                <!-- Stránkovanie bude dynamicky generované tu -->
+            </ul>
+        </nav>
+    </div>
+    <script src="../scripts/global.js"></script>
+    <footer id="mainFooter" class="text-center bg-body-tertiary">
+        <div class="text-center p-3">
+            &#169; 2024 Copyright: Sebastian Sidor
+        </div>
+    </footer>
+    <script src="../scripts/orders.js"></script>
+</body>
+</html>

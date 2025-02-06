@@ -9,6 +9,9 @@ function AddToCart(itemID) {
                 success: function (response) {
                     if (response.status === 'success') {
                         alert(response.message);
+                        IncreaseCartNumber();
+                        $('.cartCount').text(GetCookieValue('cartCount'));
+                        $('.cartCount').show();
                     } else {
                         alert(response.message);
                     }

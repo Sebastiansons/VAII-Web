@@ -11,6 +11,9 @@ function Logout() {
     session_unset();
     session_destroy();
 
+    session_start();
+    session_regenerate_id(true);
+
     $response = array('status' => 'success', 'message' => 'Logged out successfully.');
     echo json_encode($response);
 }

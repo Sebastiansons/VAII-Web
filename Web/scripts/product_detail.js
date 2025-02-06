@@ -54,7 +54,7 @@ function loadProductDetail() {
                                             <p>${product.Description}</p>
                                             <h4>$${product.Price}</h4>
                                             <div class="buy-button">
-                                                <button id="buyButton" class="btn btn-success" style="display: none;" onclick="AddToCart(${product.ItemID})">Buy</button>
+                                                <button id="buyButton" class="btn btn-success" style="display: none;" onclick="AddToCart(${product.ItemID})">Add to cart</button>
                                             </div>
                                         </div>
                                     `;

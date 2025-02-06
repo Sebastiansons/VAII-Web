@@ -15,7 +15,7 @@ if ($sessionID) {
         $clientID = $response['user_id'] ?? null;
 
         if ($clientID) {
-            $sql = "SELECT c.cart_id AS cart_id, si.Name AS name, si.Description AS description, si.Price AS price, si.Image AS image
+            $sql = "SELECT c.cart_id AS cart_id, si.Name AS name, si.ItemID, si.Description AS description, si.Price AS price, si.Image AS image, c.quantity AS quantity
                     FROM cart c
                     JOIN shopitems si ON c.item_id = si.ItemID
                     WHERE c.client_id = ?";

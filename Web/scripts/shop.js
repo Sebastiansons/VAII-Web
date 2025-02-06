@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function LoadFilterCategories() {
+    const categoryID = GetParameterByName('categoryID');
+
     $.ajax({
         url: `../back-end/Category/get_categories_filter.php`,
         type: 'GET',
@@ -14,16 +16,24 @@ function LoadFilterCategories() {
             if (response.status === 'success') {
                 const select = document.getElementById('category-select');
                 select.innerHTML = '';
+                let isValidCategoryID = false;
+
                 response.data.forEach((category, index) => {
                     const option = document.createElement('option');
                     option.value = category.CategoryID;
                     option.textContent = category.Name;
                     select.appendChild(option);
 
-                    if (index === 0) {
-                        select.value = category.CategoryID;
+                    if (categoryID == category.CategoryID) {
+                        isValidCategoryID = true;
                     }
                 });
+
+                if (isValidCategoryID) {
+                    select.value = categoryID;
+                } else if (response.data.length > 0) {
+                    select.value = response.data[0].CategoryID;
+                }
 
                 LoadItems();
             } else {
@@ -77,29 +87,31 @@ function LoadItems(page = 1) {
                 const imagePath = firstImage.startsWith('../../') ? firstImage.substring(6) : firstImage;
 
                 itemDiv.innerHTML = `
-                <div class="card">
-                    <div class="card-body d-flex">
-                        <div class="flex-grow-1">
-                            <h5 class="card-title">${item.Name}</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="card-text mb-0">$${item.Price}</p>
+                    <div class="card">
+                        <div class="card-body d-flex">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">${item.Name}</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="card-text mb-0">$${item.Price}</p>
+                                </div>
+                                <p class="product-text card-text">${item.Description}</p>
                             </div>
-                            <p class="product-text card-text">${item.Description}</p>
+                            <img src="../${imagePath}" class="card-img-right" alt="Product Image" style="width: 150px; height: auto; margin-left: 15px;">
                         </div>
-                        <img src="../${imagePath}" class="card-img-right" alt="Product Image" style="width: 150px; height: auto; margin-left: 15px;">
+                        <div class="d-flex justify-content-center gap-2 mt-3 mb-3">
+                            ${data.role === 'Admin' ? `
+                                <button class="btn btn-primary" onclick="EditProduct(${item.ItemID}); return false;">Edit</button>
+                                <button class="btn btn-danger" onclick="DeleteItem(${item.ItemID})">Delete</button>
+                                <button class="btn btn-success" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
+                            ` : data.role === 'Support' ? `
+                                <button class="btn btn-primary" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
+                            ` : `
+                                <button class="btn btn-primary" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
+                                <button class="btn btn-success" onclick="AddToCart(${item.ItemID}); return false;">Add to cart</button>
+                            `}
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-center gap-2 mt-3 mb-3">
-                        ${data.role === 'Admin' ? `
-                            <button class="btn btn-primary" onclick="EditProduct(${item.ItemID}); return false;">Edit</button>
-                            <button class="btn btn-danger" onclick="DeleteItem(${item.ItemID})">Delete</button>
-                            <button class="btn btn-success" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
-                        ` : `
-                            <button class="btn btn-primary" onclick="DetailProduct(${item.ItemID}); return false;">Detail</button>
-                            <button class="btn btn-success" onclick="AddToCart(${item.ItemID}); return false;">Buy</button>
-                        `}
-                    </div>
-                </div>
-            `;
+                `;
                 itemsDiv.appendChild(itemDiv);
             });
 

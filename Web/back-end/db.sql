@@ -101,3 +101,24 @@ CREATE TABLE cart (
     FOREIGN KEY (client_id) REFERENCES users(id),
     FOREIGN KEY (item_id) REFERENCES shopitems(ItemID)
 );
+
+ALTER TABLE cart
+ADD COLUMN quantity INT DEFAULT 1;
+
+CREATE TABLE order_status (
+    statusID INT AUTO_INCREMENT PRIMARY KEY,
+    statusName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE orders (
+    orderID VARCHAR(10) PRIMARY KEY,
+    clientID INT,
+    itemIDs VARCHAR(255),
+    quantities VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    statusID INT,
+    FOREIGN KEY (clientID) REFERENCES users(id),
+    FOREIGN KEY (statusID) REFERENCES order_status(statusID)
+);
+
+INSERT INTO order_status (statusName) VALUES ('Created'), ('Processing'), ('Sent'), ('Canceled');

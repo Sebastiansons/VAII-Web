@@ -40,7 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->fetch();
 
         if (password_verify($password, $hashed_password)) {
-            session_start();
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
             $_SESSION['user_id'] = $userId;
             
             $new_expiration_time = time() + 3600;
@@ -55,15 +57,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sii", $sessionId, $new_expiration_time, $userId);
             $stmt->execute();
 
-            setcookie('sessionID', $sessionId, $new_expiration_time, "/", "", true, true);
+            if ($stmt->affected_rows > 0) {
+                setcookie('sessionID', $sessionId, $new_expiration_time, "/", "", true, true);
 
-            $response['status'] = 'success';
-            $response['message'] = "Login successful!";
-            $response['session_id'] = $sessionId;
-            $response['sessionIdExpirationDate'] = $new_expiration_time;
-            $response['name'] = $username;
-            $response['balance'] = number_format($balance, 2);
-            $response['role'] = $roleName;
+                // Získanie poètu položiek v košíku
+                $cartStmt = $conn->prepare("SELECT SUM(quantity) AS stockcount FROM cart WHERE client_id = ?");
+                if ($cartStmt === false) {
+                    $response['message'] = "Prepare failed: " . $conn->error;
+                    echo json_encode($response);
+                    exit;
+                }
+
+                $cartStmt->bind_param("i", $userId);
+                $cartStmt->execute();
+                $cartStmt->bind_result($stockcount);
+                $cartStmt->fetch();
+                $cartStmt->close();
+
+                $response['status'] = 'success';
+                $response['message'] = "Login successful!";
+                $response['session_id'] = $sessionId;
+                $response['sessionIdExpirationDate'] = $new_expiration_time;
+                $response['name'] = $username;
+                $response['balance'] = number_format($balance, 2);
+                $response['role'] = $roleName;
+                $response['stockcount'] = $stockcount; // Pridanie poètu položiek v košíku do odpovede
+            } else {
+                $response['message'] = "Failed to update session.";
+            }
         } else {
             $response['message'] = "Invalid password.";
         }
@@ -79,5 +100,4 @@ echo json_encode($response);
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_last_error_msg();
 }
-
 ?>
