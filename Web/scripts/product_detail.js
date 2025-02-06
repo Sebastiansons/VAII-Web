@@ -56,7 +56,7 @@ function loadProductDetail() {
                             <div class="col-12 col-md-6 product-detail">
                                 <h3>${product.Name}</h3>
                                 <p>${product.Description}</p>
-                                <h4>$${product.Price}</h4>
+                                <h4>${product.Price}&#8364;</h4>
                                 <div class="buy-button">
                                     <button id="buyButton" class="btn btn-success" style="display: none;" onclick="AddToCart(${product.ItemID})">Add to cart</button>
                                 </div>

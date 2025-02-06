@@ -70,7 +70,7 @@ $(document).ready(function () {
                 <tr>
                     <td>${order.orderID}</td>
                     <td>${order.created_at}</td>
-                    <td>${order.total_price}&#8364;</td>
+                    <td>${order.total_price.toFixed(2)}&#8364;</td>
                     <td class="${statusClass}">
                         ${role === 'Support' ? `
                         <select class="status-select" data-order-id="${order.orderID}">

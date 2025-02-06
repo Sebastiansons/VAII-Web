@@ -97,7 +97,7 @@ function LoadItems(page = 1) {
                             <div class="flex-grow-1">
                                 <h5 class="card-title">${item.Name}</h5>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <p class="card-text mb-0">$${item.Price}</p>
+                                    <p class="card-text mb-0">${item.Price}&#8364;</p>
                                 </div>
                                 <p class="product-text card-text">${item.Description}</p>
                             </div>
