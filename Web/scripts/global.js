@@ -53,8 +53,13 @@ function UpdateNavbar() {
     if (navbarContent) {
         if (IsSessionValid()) {
             const role = GetCookieValue('role');
-            const stockCount = GetCookieValue('cartCount');
+            let stockCount = GetCookieValue('cartCount');
             let cartCountHtml = '';
+
+            if (stockCount == "null") {
+                document.cookie = "cartCount=0; path=/";
+                stockCount = 0;
+            }
 
             if (role === 'Customer') {
                 const paddingClass = stockCount.length === 1 ? 'single-digit' : 'double-digit';
